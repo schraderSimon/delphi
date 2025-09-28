@@ -189,6 +189,9 @@ class RunConfig(Serializable):
     num_gpus: int = field(
         default=torch.cuda.device_count(),
     )
+    max_memory: float = field(
+        default=0.9,
+    )
     """Number of GPUs to use for explanation and scoring."""
 
     seed: int = field(

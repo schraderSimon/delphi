@@ -7,6 +7,7 @@ from typing import Union
 
 from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
+from vllm.inputs import TokensPrompt
 from vllm.distributed.parallel_state import (
     destroy_distributed_environment,
     destroy_model_parallel,
@@ -118,12 +119,12 @@ class Offline(Client):
                         num_generated_tokens=0,
                     )
                 )
+        prompts = TokensPrompt.from_token_ids(prompts)  # format for vLLM
         response = await loop.run_in_executor(
             None,
             partial(
                 self.client.generate,  # type: ignore
-                # prompt_token_ids=prompts,  # deprecated according to the LLM.generate() docstring
-                inputs=prompts,
+                prompts,
                 sampling_params=self.sampling_params,
                 use_tqdm=False,
             ),

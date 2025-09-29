@@ -105,9 +105,8 @@ class Offline(Client):
             prompt = self.tokenizer.apply_chat_template(
                 batch, add_generation_prompt=True, tokenize=True
             )
-            prompt_formatted = TokensPrompt()
-            prompt_formatted["prompt_token_ids"] = prompt
-            prompts.append(prompt_formatted)
+            prompt = TokensPrompt(prompt_token_ids=prompt)  # format for newer version of vLLM
+            prompts.append(prompt)
             if self.statistics:
                 non_cached_tokens = len(
                     self.tokenizer.apply_chat_template(

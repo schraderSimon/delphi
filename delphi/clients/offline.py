@@ -119,12 +119,13 @@ class Offline(Client):
                         num_generated_tokens=0,
                     )
                 )
-        prompts = TokensPrompt.from_token_ids(prompts)  # format for vLLM
+        prompts_formatted = TokensPrompt()  # format for vLLM
+        prompts_formatted["prompt_token_ids"] = prompts
         response = await loop.run_in_executor(
             None,
             partial(
                 self.client.generate,  # type: ignore
-                prompts,
+                prompts_formatted,
                 sampling_params=self.sampling_params,
                 use_tqdm=False,
             ),

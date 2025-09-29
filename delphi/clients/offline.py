@@ -122,7 +122,8 @@ class Offline(Client):
             None,
             partial(
                 self.client.generate,  # type: ignore
-                prompt_token_ids=prompts,
+                # prompt_token_ids=prompts,  # deprecated according to the LLM.generate() docstring
+                inputs=prompts,
                 sampling_params=self.sampling_params,
                 use_tqdm=False,
             ),
